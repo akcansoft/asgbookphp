@@ -1,0 +1,148 @@
+﻿body {
+	font-family: verdana;
+	font-size:14px;
+	background-image: url('bg.png');
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position-x: center;
+	color: #fff;	
+}
+	
+table {
+	color:#fff;
+	font-size:14px;
+}
+
+.tableform {
+	color: #fff;
+	font-family: tahoma;
+	font-size: 11px;
+	font-weight: bold;
+	border-style: solid;
+	border-width: 1px;
+	background-color: #717400;
+	font:9pt verdana; 
+	width: 550px;
+	background-image: url('frmbg.jpg');
+}
+
+.tableformgolge {
+	width: 568px;
+}
+
+a{
+	color: #fff;
+	text-decoration:none;
+}
+
+a:hover{
+	color: #f00;	
+	background: #fff;
+} 
+
+input {
+	color: #f00;
+	font-family: tahoma;
+}
+
+select {
+	color: #f00;
+	font-weight: bold;
+	background-color: #fff;
+}
+
+textarea {color: #ff0000}
+
+.buton {
+	border-style:outset;
+	border-width:1px;
+	background-image: url('button.png');
+	padding: 3px 5px;
+	margin:1px;
+}
+
+.buton2 {
+	border-style:inset;
+	border-width:2px;
+	padding: 2px 5px;
+	background:#fff;
+	color:red;
+	margin:1px;
+	font-weight:bold;
+}
+	
+
+.buton3 {
+	border-style:outset;
+	border-width:1px;
+	padding:3px 7px;
+	margin:2px;
+	background-color:#fd5200;
+	color:white;
+	font-size:14 px;
+	font-weight:bold;
+}
+
+.buton3:hover { background-color:white;color:red}
+
+
+.satir{padding:4px}
+.msg {padding:5px}
+
+.baslik{
+	border-style:outset;
+	border-width:1px;
+	padding:5px 25px;
+	color:#ffffff;
+	background-image: url('button.png');
+	font-size:20px;
+	font-family:arial;
+	font-weight:bold;
+	text-align: center;
+	width: 720px;
+}
+
+code {
+	font-family: courier new;
+	color: #f00;
+	border: 1px dotted #f00;
+	background-color: #fff;
+	padding:5px;
+	margin:3px;
+	display: block;	
+}
+
+.cevap {
+	color: #f00;
+	font-family: "trebuchet ms",arial;
+	border: 1px solid #f00;
+	margin:7px;
+	padding:4px;
+	background-color: #fff;
+}
+
+.divb {
+	color:black;
+	background:-moz-linear-gradient( center top, #f9f9f9 11%, #e9e9e9 94% );
+	background:-ms-linear-gradient( top, #f9f9f9 11%, #e9e9e9 94% );
+	filter:progid:dximagetransform.microsoft.gradient(startcolorstr='#f9f9f9', endcolorstr='#e9e9e9');
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(11%, #f9f9f9), color-stop(94%, #e9e9e9) );
+	background-color:#f9f9f9;	
+	text-align: left;
+	display:inline-block;
+	padding:5px;
+	margin:3px;
+}
+
+.uyarimsj {
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	border:1px solid #dcdcdc;
+	padding: 7px;
+	display: inline-block;
+	color:white;
+	font-weight: bold;
+	background-color: red;
+}
+

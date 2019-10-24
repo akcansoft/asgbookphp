@@ -1,0 +1,17 @@
+BODY,TABLE {font:9pt Verdana}
+a { margin-left: 5px }
+
+.baslik{
+	font-size:12pt;
+	font-family:Arial;
+	font-weight:bold;
+	text-align: center;
+}
+code {width:100%; border: 1px dashed black; background-color:#DDD; margin:5px;padding:3px
+}
+
+.cevap {
+	border: 1px solid black;
+	margin:7px; padding:4px;
+	background-color:#CCC;
+}

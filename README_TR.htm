@@ -1,7 +1,159 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>aSgbookPHP: akcanSoft Guestbook PHP</title><style><!--body {font-family: Verdana;font-size: 9pt;line-height:130%; background-image: url("templates/shadow/bg.gif");}.tab1{background-color:#FFE2A8;border-width: 2px;border-style: inset;padding:8px;width:800px;}.tab1 h2 {border:1px inset #FFFFFF;font-family: Trebuchet MS;font-weight: bold;color:#FFFFFF;padding: 8px 2px 5px 5px;background-color:#FF9900;}.tab1 h5 {border:1px inset #FFFFFF;padding: 2px 2px 2px 25px;background-color:#FFC66F;}
-.auto-style1 {
-	font-size: large;
-	color: #FF0000;
-	font-weight: bold;
-}
---></style></head><body><div align="center"><div class="tab1" align="left"><p><font size="6" color="#FF8000"><strong>aSgbookPHP</strong><br></font></b><br><b><i>akcan</i>Soft</b> Guestbook PHP v2.3.150228<br>28/2/2015<br>© 2003-2015 Mesut Akcan<br><br><a href="http://www.akcansoft.com">akcansoft.com</a> - <a href="mailto:makcan@gmail.com">makcan@gmail.com</a><br><a href="http://akcansoft.com/asgbookphp_ziyaretcidefteri.htm">http://akcansoft.com/asgbookphp_ziyaretcidefteri.htm</a> </p><p>Karşılaştığınız sorunları e-maille bildiriniz.</p><h2>Tanımlama</h2><p><strong>PHP</strong> dilinde yazılmış kullanımı ve kurulumu basit bir <strong>ziyaretçi defteri</strong> scriptidir. <strong>mySQL</strong> veritabanı kullanmadığı için PHP destekli birçok sunucuda kullanılabilir. Kişisel sitelerde kullanımı bedavadır. Kuralları ve yardımı okuyunuz.</p><h2>Neler yeni?</h2><ul><li>Spam mesajlara karşı koruma arttırıldı.</li><li>Kodlar tamamen gözden geçirilip geliştirildip iyileştirildi.</li><li>Eski şablonlar yeni sürüme göre uyarlandı. Yeni şablonlar eklendi</li><li>Grafik güvenlik kodundan şimdilik vazgeçildi yerine metin güvenlik kodu kullanıldı.</li><li>Görsel değişiklikler yapıldı</li><li>Sürüm kontrolü eklendi. Yeni sürüm çıktığında ayarlar sayfasında belirtilecek.</li><li>Onaylanmamış mesajları tümünü silme özelliği eklendi.</li></ul><h2>Ön hazırlık</h2><ul><li>Rar ile paketlenmiş dosyayı bir klasöre açın. </li><li><b>form_mesajgonder.h</b> dosyası mesaj göndermek için form dosyası şablonudur.<br>İsterseniz bu şablon dosyasını kendinize göre düzenleyebilirsiniz. Dosyadaki # ve # arasını değiştirmeyiniz. Bu alanlar php kodlamada gerekli alanlardır.</li><li>Ziyaretçi defteri mesajlarını gösteren sayfalar için şablonlar <strong>templates </strong>klasörü içine yerleştirilmiştir.<br>İsterseniz bu şablon dosyalarını da kendinize göre değiştirebilirsiniz. # ve # arasını değiştirmeyin.</li><li>Kullanmak istemediğiniz şablonları silebilirsiniz. En az bir şablon kalması gerekir. Özellikle <strong>notebook</strong> şablonunu silmeyiniz.</li></ul><h2>KURULUM</h2><h5>İlk Kurulum</h5><ul><li>FTP programıyla servere bağlanın. FTP programı için <a href="http://filezilla.sourceforge.net/">http://filezilla.sourceforge.net/</a> deki FileZilla FTP programını kullanabilirsiniz. Bedavadır.</li><li>Serverde <b>zd</b>(farklı da olabilir) adında bir klasör oluşturun <b>CHMOD 755</b> uygulayın. (Klasörü sağ tıkla / Dosya izinleri)</li><li>RAR'lı dosyayı açtığınız klasördeki dosyaları bu klasöre gönderin.<br><b>txt</b> , <b>php , js , h ve htm</b> uzantılı dosyaları ASCII formatında gönderin.<br>Filezilla programında bu otomatik olarak sağlanır.</li><li><b>data12.txt</b> ve <b>ayarlar.php</b> dosyasına <b>CHMOD 644 </b>uygulayın. (Dosyanın yazma korumasını açar)</li><li>Güvenlik için <strong>data12.txt</strong> dosya adını değiştirin. Aynı değişikliği <strong>ayarlar.php</strong> içinde de yapın</li><li>Kurulum ile ilgili tecrübeniz yok ise <a href="http://akcansoft.blogspot.com/2008/05/ziyareti-defteri-kurulum-filmi.html">Ziyaretçi defteri kurulum filmi</a>ni izleyiniz.</li><li><a href="http://www.web_sayfa_adresiniz.com/zd">http://www.web_sayfa_adresiniz.com/zd</a> adresiyle ziyaretçi defterine ulaşabilirsiniz.</li><li>Ziyaretçi defterini ilk defa çalıştırdığınızda kurulum işlemi başlayacaktır.<br>Yönetici girişi yapıp gerekli ayarları yapıp kaydediniz.</li><li>Başlangıçta parola: <span class="auto-style1">admin</span> 'dir. Parolayı değiştirmeyi unutmayınız. </li></ul><h5>Eski sürüm üzerine kurma(Güncelleme)</h5><ul><li>Serverdeki <b>data12.txt</b> ve <strong>ayarlar.php</strong> dosyalarınızın yedeğini alın.</li><li>1.92 sürümünden itibaren dosyalara <strong>UTF-8 Dil</strong> kodlaması uygulandığı için eski sürümün mesajlarındaki Türkçe karakterler düzgün görünmeyebilir. Bu durumda Windows not defteri (notepad.exe) ile dosyayı açın. Dosya/Farklı kaydet tıklayın. Farklı kaydet penceresi altında Kodlama yanında UTF-8 seçin Kaydet tıklayın.<br></li><li>Eğer templates(şablon) dosyalarında değişiklik yaptıysanız onların da yedeğini alın.</li><li>data12.txt , config.php (ayarlar.php) ve eğer değiştirdiyseniz şablon dosyaları hariç rarlı dosyayı açtığınız klasör içindeki dosyaların tümünü servere FTP ile gönderin. </li></ul><h2>Kullanımı</h2><ul><li>Ziyaretçi defterini yönetmek için <b>Yönetici giriş</b> linkini tıklayın.<br>Yönetici girişi yaptığınızda yönetici için gerekli olan linkler sayfada görünecektir<br>Bunlar:<br><img border="0" src="img/del.gif" width="16" height="16"> <b>Mesaj silme </b>: Mesajı Siler. <b>Dikkat</b>! Onay istemeden siler.<br><img border="0" src="img/ed.gif" width="16" height="16"> <b>Mesajı Düzenle</b> : Mesajda değişiklik yapabilirsiniz. Düzenleme ekranında Mesajı sil işaretli ise mesaj kaydı silinir.<br><img border="0" src="img/ok.gif" width="14" height="16"> <b>Mesajı Onayla</b>: Bekleyen bir mesaj ise mesajı onaylayabilirsiniz.<br>Ayrıca <b>Ayarlar</b>'ı yapmak için ve <b>Yönetici çıkış</b>ı yapmak için link olacaktır.<br>Yönetici çıkışı yapıldığında bu linkler gösterilmez<br><b>Yalnız onay bekleyenleri göster: </b>Sayfadaki yalnız onay bekleyen mesajlar gösterilir diğerleri gösterilmez. Bu işlem sadece bulunan sayfa ile ilgilidir. Bekleyen mesajlar için ayrıca sayfalama yapılmamıştır</li><li>Mesajları göstermek için şablon(tema) kullanımı özelliği de vardır.<br>Örnek olarak <b>simple</b> , <b>notebook ,</b> <b>shadow, ggl</b> ve <b>3d</b> arayüzleri paket içine dahil edilmiştir.<br>Bu arayüzleri web sitenize uyum(renk, grafik) sağlayacak şekilde değiştirebilirsiniz.</li><li>Kullanmak istediğiniz arayüzü ayarlar sayfasından belirleyiniz.</li><li>Eğer değişik arayüzler elde ederseniz lütfen e-mail ile bana gönderiniz.<br>Sonraki sürümlerde paket içine ekleyebilirim.</li><li>Mesaj boyutu 1700 harf ile sınırlandırılmıştır. Eğer bu ayarı değiştirmek isterseniz <b>form.js</b> dosyasındaki<br><span style="background-color: #C0C0C0">var maxharf = 1700;</span><br>satırındaki 1700 rakamını değiştirip kaydedin.</li></ul><h2>Kurallar</h2><ul><li>Scripti kullanan kuralları kabul etmiş sayılır.</li><li>Bu script illegal içerikli ve ya genel ahlaka aykırı sitelerde kullanılamaz.</li><li>Ticari sitelerde ücretsiz kullanılamaz.<br>Ticari sitelerde kullanmak isteyenler <a href="mailto:makcan@gmail.com">makcan@gmail.com</a> ile iletişim kurunuz.</li><li>Ücretsiz kullanımda sayfa altında çıkan <strong>akcansoft.com</strong> linki kaldırılamaz.</li><li>Scriptlerdeki yazar adı, web ve mail adresi dışındakilerde değişiklik yapabilirsiniz. </li><li>Scripti satamazsınız. </li><li>Scripi serverinize düzgün olarak kurduysanız mail adresinizi ve kurduğunuz web adresinizi bana maille gönderiniz.</li><li>Scriptin hiçbir <b>GARANTİ</b>si yoktur.</li><li><b>Kullanımdan doğacak zararlarda kullanıcı sorumludur.</b></li></ul><h2>Sorunlar / Çözümler</h2><p><i><strong>S: Script çalışmıyor.</strong></i><br>Ç: Serverin PHP destekli olup olmadığını öğrenin.<br>Aşağıdaki kodları <b>info.php</b> dosyasına yazıp servere gönderip çalıştırın.<br><span style="font-weight: 700; background-color: #FFFFCC">&lt;?PHP phpinfo(); ?&gt;</span><br>PHP çalışıyorsa serverdeki php ve diğer bilgiler içeren bir sayfa gelmesi gerekir. </p><p><i><strong>S: Kurulum yapıyorum, hep ayarlar sayfası geliyor.</strong><br></i>Ç: config.php dosyasına yazmada sorun var. config.php dosyasındaki ayarları kendiniz yapınız ve <b><span style="background-color: #FFFFCC">$setok=1;</span></b> satırını ekleyiniz.<br>Bazı sunucular php dosyaya yazmaya izin vermez. Bu durumda config.php dosya adını config.inc olarak değiştirin, index.php i&ccedil;indeki config.php yazısını bulup config.inc olarak değiştirin.</p><p><strong>S: <i>Sunucum PHP destekliyor. Buradaki açıklamalara rağmen acemi olduğumdan bu scripti ben kuramıyorum.</i></strong><i><br></i>Ç: <a href="http://akcansoft.blogspot.com/2008/05/ziyareti-defteri-kurulum-filmi.html">Ziyaretçi defteri kurulum filmi</a>ni izleyerek kurmayı deneyin. Yine olmazsa <a href="mailto:makcan@gmail.com">makcan@gmail.com</a> ile iletişime geçiniz.</p><h2>Programcıya Yardım</h2><ul><li>Bu script kişisel siteler için kurallara uyarak tamamen <b>BEDAVA </b>kullanılabilir.</li><li>Satılmaz, Değişiklik yapılmadan Bedava dağıtılabilir. </li><li>Bu script sadece bir kişi tarafından tamamen amatör ruhla ve büyük özveri, uzun çalışmalar ve çabalar sonucu üretilmiştir.</li><li>Programcıya emeği karşılığında yardımda bulunmak isterseniz <a href="mailto:makcan@gmail.com">makcan@gmail.com</a> ile iletişime ge&ccedil;iniz </li><li>Yardımda bulunduğunuzda scripti sayfa altında çıkan <b>linki kaldırılmış bir sürümü size gönderilecek</b> ve bu şekilde kullanma hakkına sahip olacaksınız.</li></ul><p><strong>Mesut AKCAN</strong></p></div></div></body></html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>aSgbookPHP: akcanSoft Guestbook PHP</title>
+  <style><!--body {font-family: Verdana;font-size: 9pt;line-height:130%; background-image: url("templates/shadow/bg.gif");}.tab1{background-color:#FFE2A8;border-width: 2px;border-style: inset;padding:8px;width:800px;}.tab1 h2 {border:1px inset #FFFFFF;font-family: Trebuchet MS;font-weight: bold;color:#FFFFFF;padding: 8px 2px 5px 5px;background-color:#FF9900;}.tab1 h5 {border:1px inset #FFFFFF;padding: 2px 2px 2px 25px;background-color:#FFC66F;}--></style>
+</head>
+<body>
+<div align="center">
+<div class="tab1" align="left"> 
+<p><font color="#ff8000" size="6"><strong>aSgbookPHP</strong><br>
+ </font><br>
+ 
+<b><i>akcan</i>Soft</b> Guestbook PHP v2.4.160918<br>
+ 
+18/09/2016<br>
+
+&copy; 2003-2016 Mesut Akcan<br>
+ <br>
+ <a href="http://www.akcansoft.com">akcansoft.com</a> - <a href="mailto:makcan@gmail.com">makcan@gmail.com</a><br>
+ <a href="http://www.akcansoft.com/2015/04/akcansoft-ziyaretci-defteri.html">http://www.akcansoft.com/2015/04/akcansoft-ziyaretci-defteri.html<br>
+</a> </p>
+<p> Karşılaştığınız sorunları e-maille bildiriniz.</p>
+ 
+<h2>Tanımlama</h2>
+ 
+<p><strong>PHP</strong> dilinde yazılmış kullanımı ve kurulumu basit bir <strong>ziyaret&ccedil;i defteri</strong> scriptidir. <strong>mySQL</strong>
+veritabanı kullanmadığı i&ccedil;in PHP destekli bir&ccedil;ok sunucuda
+kullanılabilir. Kişisel sitelerde kullanımı bedavadır. Kuralları ve
+yardımı okuyunuz.</p>
+<h2>Neler yeni?</h2>
+<ul>
+  <li>İşlem sonrası bekleyen sayfalarda otomatik ana sayfaya y&ouml;nlendirme</li>
+
+</ul>
+
+<h2>&Ouml;n hazırlık</h2>
+<ul>
+ <li>Rar ile paketlenmiş dosyayı bir klas&ouml;re a&ccedil;ın. </li>
+ <li><b>form_mesajgonder.h</b> dosyası mesaj g&ouml;ndermek i&ccedil;in form dosyası şablonudur.<br>
+İsterseniz bu şablon dosyasını kendinize g&ouml;re
+d&uuml;zenleyebilirsiniz. Dosyadaki # ve # arasını değiştirmeyiniz. Bu
+alanlar php kodlamada gerekli alanlardır.</li>
+ <li>Ziyaret&ccedil;i defteri mesajlarını g&ouml;steren sayfalar i&ccedil;in şablonlar <strong>templates </strong>klas&ouml;r&uuml; i&ccedil;ine yerleştirilmiştir.<br>
+İsterseniz bu şablon dosyalarını da kendinize g&ouml;re değiştirebilirsiniz. # ve # arasını değiştirmeyin.</li>
+ <li>Kullanmak istemediğiniz şablonları silebilirsiniz. En az bir şablon kalması gerekir. &Ouml;zellikle <strong>notebook</strong> şablonunu silmeyiniz.</li>
+ 
+</ul>
+ 
+<h2>KURULUM</h2>
+<h5>İlk Kurulum</h5>
+<ul>
+  <li>FTP programıyla servere bağlanın. FTP programı i&ccedil;in <a href="http://filezilla.sourceforge.net/">http://filezilla.sourceforge.net/</a> deki FileZilla FTP programını kullanabilirsiniz. Bedavadır.</li>
+ <li>Serverde <b>zd</b>(farklı da olabilir) adında bir klas&ouml;r oluşturun <b>CHMOD 755</b> uygulayın. (Klas&ouml;r&uuml; sağ tıkla / Dosya izinleri)</li>
+ <li>RAR'lı dosyayı a&ccedil;tığınız klas&ouml;rdeki dosyaları bu klas&ouml;re g&ouml;nderin.<br>
+ <span style="font-weight: bold;">txt, h, js</span> ve <b>php</b> uzantılı dosyaları ASCII formatında g&ouml;nderin.<br>
+ Filezilla programında bu otomatik olarak sağlanır.</li>
+ <li><b>data12.txt</b> ve <b>ayarlar.php</b> dosyasına <b>CHMOD 644 </b>uygulayın. (Dosyanın yazma korumasını a&ccedil;ar)</li>
+ <li>G&uuml;venlik i&ccedil;in <strong>data12.txt</strong> dosya adını değiştirin. Aynı değişikliği <strong>ayarlar.php</strong> i&ccedil;inde de yapın</li>
+ <li>Kurulum ile ilgili tecr&uuml;beniz yok ise <a href="http://www.akcansoft.com/2008/05/ziyaretci-defteri-kurulum-filmleri.html">Ziyaret&ccedil;i defteri kurulum filmi</a>ni izleyiniz.</li>
+ <li><a href="http://www.web_sayfa_adresiniz.com/zd">http://www.web_sayfa_adresiniz.com/zd</a> adresiyle ziyaret&ccedil;i defterine ulaşabilirsiniz.</li>
+ <li>Ziyaret&ccedil;i defterini ilk defa &ccedil;alıştırdığınızda kurulum işlemi başlayacaktır.<br>
+ Y&ouml;netici girişi yapıp gerekli ayarları yapıp kaydediniz.</li>
+ <li>Başlangı&ccedil;ta parola: <font size="5"><b>admin</b> </font>'dir. Parolayı değiştirmeyi unutmayınız. </li>
+ 
+</ul>
+ 
+<h5>Eski s&uuml;r&uuml;m &uuml;zerine kurma(G&uuml;ncelleme)</h5>
+<ul>
+  <li>Serverdeki <b>data12.txt</b> ve <strong>ayarlar.php</strong> dosyalarınızın yedeğini alın.</li>
+  <li>1.92 s&uuml;r&uuml;m&uuml;nden itibaren dosyalara UTF-8 Dil
+kodlaması uygulandığı i&ccedil;in eski s&uuml;r&uuml;m&uuml;n
+mesajlarındaki T&uuml;rk&ccedil;e karakterler d&uuml;zg&uuml;n
+g&ouml;r&uuml;nmeyebilir. Bu durumda Windows not defteri (notepad.exe)
+ile dosyayı a&ccedil;ın. Dosya/Farklı kaydet tıklayın. Farklı kaydet
+penceresi altında Kodlama yanında UTF-8 se&ccedil;in Kaydet tıklayın.<br>
+
+  </li>
+  <li>Eğer templates(şablon) dosyalarında değişiklik yaptıysanız onların da yedeğini alın.</li>
+  <li>data12.txt , config.php (ayarlar.php) ve eğer değiştirdiyseniz
+şablon dosyaları hari&ccedil; rarlı dosyayı a&ccedil;tığınız
+klas&ouml;r i&ccedil;indeki dosyaların t&uuml;m&uuml;n&uuml; servere
+FTP ile g&ouml;nderin. </li>
+</ul>
+<h2>Kullanımı</h2>
+<ul>
+  <li>Ziyaret&ccedil;i defterini y&ouml;netmek i&ccedil;in <b>Y&ouml;netici giriş</b> linkini tıklayın.<br>
+Y&ouml;netici girişi yaptığınızda y&ouml;netici i&ccedil;in gerekli olan linkler sayfada g&ouml;r&uuml;necektir<br>
+Bunlar:<br>
+    <img src="img/del.gif" border="0" height="16" width="16"> <b>Mesaj silme </b>: Mesajı Siler. <b>Dikkat</b>! Onay istemeden siler.<br>
+    <img src="img/ed.gif" border="0" height="16" width="16"> <b>Mesajı D&uuml;zenle</b> : Mesajda değişiklik yapabilirsiniz. D&uuml;zenleme ekranında Mesajı sil işaretli ise mesaj kaydı silinir.<br>
+    <img src="img/ok.gif" border="0" height="16" width="14"> <b>Mesajı Onayla</b>: Bekleyen bir mesaj ise mesajı onaylayabilirsiniz.<br>
+Ayrıca <b>Ayarlar</b>'ı yapmak i&ccedil;in ve <b>Y&ouml;netici &ccedil;ıkış</b>ı yapmak i&ccedil;in link olacaktır.<br>
+Y&ouml;netici &ccedil;ıkışı yapıldığında bu linkler g&ouml;sterilmez<br>
+    <b>Yalnız onay bekleyenleri g&ouml;ster: </b>Sayfadaki yalnız onay
+bekleyen mesajlar g&ouml;sterilir diğerleri g&ouml;sterilmez. Bu işlem
+sadece bulunan sayfa ile ilgilidir. Bekleyen mesajlar i&ccedil;in
+ayrıca sayfalama yapılmamıştır</li>
+ <li>Mesajları g&ouml;stermek i&ccedil;in şablon(tema) kullanımı &ouml;zelliği de vardır.<br>
+&Ouml;rnek olarak <span style="font-weight: bold;">basit</span>, <b>alaca ,</b> <b>shadow, ggl</b>... aray&uuml;zleri paket i&ccedil;ine dahil edilmiştir.<br>
+Bu aray&uuml;zleri web sitenize uyum(renk, grafik) sağlayacak şekilde değiştirebilirsiniz.</li>
+  <li>Kullanmak istediğiniz aray&uuml;z&uuml; ayarlar sayfasından belirleyiniz.</li>
+  <li>Eğer değişik aray&uuml;zler elde ederseniz l&uuml;tfen e-mail ile bana g&ouml;nderiniz.<br>
+Sonraki s&uuml;r&uuml;mlerde paket i&ccedil;ine ekleyebilirim.</li>
+ <li>Mesaj boyutu 1700 harf ile sınırlandırılmıştır. Eğer bu ayarı değiştirmek isterseniz <b>form.js</b> dosyasındaki<br>
+ <span style="background-color: rgb(192, 192, 192);">var maxharf = 1700;</span><br>
+ satırındaki 1700 rakamını değiştirip kaydedin.</li>
+</ul>
+<h2>Kurallar</h2>
+<ul>
+ <li>Scripti kullanan kuralları kabul etmiş sayılır.</li>
+
+  <li>Bu script illegal i&ccedil;erikli ve ya genel ahlaka aykırı sitelerde kullanılamaz.</li>
+ 
+  <li>Ticari sitelerde &uuml;cretsiz kullanılamaz.<br>
+Ticari sitelerde kullanmak isteyenler <a href="mailto:makcan@gmail.com">makcan@gmail.com</a> ile iletişim kurunuz.</li>
+ <li>&Uuml;cretsiz kullanımda sayfa altında &ccedil;ıkan akcansoft.com linki kaldırılamaz.</li>
+ <li>Scriptlerdeki yazar adı, web ve mail adresi dışındakilerde
+değişiklik yapabilirsiniz. Değişiklik yaptığınızda dağıtım yapamazsınız
+  </li>
+
+  <li>Scripti satamazsınız. </li>
+
+  <li>Scripi serverinize d&uuml;zg&uuml;n olarak kurduysanız mail adresinizi ve kurduğunuz web adresinizi bana maille g&ouml;nderiniz.</li>
+  <li>Scriptin hi&ccedil;bir <b>GARANTİ</b>si yoktur.</li>
+  <li><b>Kullanımdan doğacak zararlarda kullanıcı sorumludur.</b></li>
+</ul>
+ 
+<h2>Sorunlar / &Ccedil;&ouml;z&uuml;mler</h2>
+<p><i><strong>S: Script &ccedil;alışmıyor.</strong></i><br>
+&Ccedil;: Serverin PHP destekli olup olmadığını &ouml;ğrenin.<br>
+Aşağıdaki kodları <b>info.php</b> dosyasına yazıp servere g&ouml;nderip &ccedil;alıştırın.<br>
+<span style="font-weight: 700; background-color: rgb(255, 255, 204);">&lt;?PHP phpinfo(); ?&gt;</span><br>
+PHP &ccedil;alışıyorsa serverdeki php ve diğer bilgiler i&ccedil;eren bir sayfa gelmesi gerekir. </p>
+<p><i><strong>S: Kurulum yapıyorum, hep ayarlar sayfası geliyor.</strong><br>
+</i>&Ccedil;: config.php dosyasına yazmada sorun var. config.php dosyasındaki ayarları kendiniz yapınız ve <b><span style="background-color: rgb(255, 255, 204);">$setok=1;</span></b> satırını ekleyiniz.<br>
+Bazı sunucular php dosyaya yazmaya izin vermez. Bu durumda config.php
+dosya adını config.inc olarak değiştirin, index.php i&ccedil;indeki
+config.php yazısını bulup config.inc olarak değiştirin.</p>
+<p><strong>S: <i>Sunucum PHP destekliyor. Buradaki a&ccedil;ıklamalara rağmen acemi olduğumdan bu scripti ben kuramıyorum.</i></strong><i><br>
+</i>&Ccedil;: <a href="http://www.akcansoft.com/2008/05/ziyaretci-defteri-kurulum-filmleri.html">Ziyaret&ccedil;i defteri kurulum filmi</a>ni izleyerek kurmayı deneyin. Yine olmazsa <a href="mailto:makcan@gmail.com">makcan@gmail.com</a> ile iletişime ge&ccedil;iniz.</p>
+<h2>Programcıya Yardım</h2>
+<ul>
+ <li>Bu script kişisel siteler i&ccedil;in kurallara uyarak tamamen <b>BEDAVA </b>kullanılabilir.</li>
+
+  <li>Satılmaz, Değişiklik yapılmadan Bedava dağıtılabilir. </li>
+
+  <li>Bu script sadece bir kişi tarafından tamamen amat&ouml;r ruhla
+ve b&uuml;y&uuml;k &ouml;zveri, uzun &ccedil;alışmalar ve
+&ccedil;abalar sonucu &uuml;retilmiştir.</li>
+
+  <li>Programcıya emeği karşılığında yardımda bulunmak isterseniz <a href="mailto:makcan@gmail.com"> makcan@gmail.com</a> ile iletişime ge&ccedil;iniz </li>
+
+  <li>Yardımda bulunduğunuzda scripti sayfa altında &ccedil;ıkan <b>linki kaldırılmış bir s&uuml;r&uuml;m&uuml; size g&ouml;nderilecek</b> ve bu şekilde kullanma hakkına sahip olacaksınız.</li>
+</ul>
+</div>
+</div>
+</body>
+</html>

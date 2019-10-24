@@ -1,0 +1,66 @@
+BODY {
+	scrollbar-face-color: #4F012B;
+	scrollbar-shadow-color: #000000;
+	scrollbar-highlight-color: #DEE7EF;
+	scrollbar-3dlight-color: #FFFFFF;
+	scrollbar-darkshadow-color: #AFC6DB;
+	scrollbar-track-color: #CA9EE5;
+	scrollbar-arrow-color: #FFFFFF;
+	font-family: Verdana;
+	font-size:9pt;
+	background-color:#FFEEE7;
+	}
+TABLE {font:9pt Verdana}
+
+A{text-decoration:none}
+
+A:hover{
+	background:yellow;
+	color:black;
+	} 
+.buton {
+	border-style:outset;
+	border-width:2px;
+	background-image: url('img/but.gif');
+	height: 15px; padding-left:5px; padding-right:5px; padding-top:1px; padding-bottom:1px
+}
+
+
+.buton2 {
+	border-style:inset;
+	border-width:2px;
+	background-image: url('img/but.gif');
+	height: 15px; padding-left:5px; padding-right:5px; padding-top:1px; padding-bottom:1px
+}
+
+.tablo {font:9pt Verdana;width:790;}
+
+.baslik{
+	border-style:outset;
+	border-width:2px;
+	padding:0;
+	color:#FF8040;
+	background-image: url('img/but.gif');
+	font-size:12pt;
+	font-family:Arial;
+	font-weight:bold;
+	text-align: center;
+	width: 70%;
+}
+input,textarea {
+	font-family: Verdana;
+	font-size: 10pt;
+	background-image: url(imgskin/notebook/iback.jpg);
+	background-attachment: fixed;
+}
+code {width:100%; border: 1px dashed #0000FF; background-color:#E2E1FF; margin:5px;padding:3px
+}
+.cevap {
+	font-family:Arial;
+	font-size: 9pt;
+font-weight:bold;
+	border: 3px dotted #FgEEw7;
+	margin:7px;
+	padding:4px;
+	background-image: url('lilaback.jpg');
+}
