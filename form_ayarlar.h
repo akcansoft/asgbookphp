@@ -237,10 +237,10 @@ Birden çok boş satırı engelle</td>
 	<br>
 	<?PHP 
 	if (file_exists($data_file)){
-	echo '<span style='color:green'><b>VAR,</b></span>';
-	if (is_writable($data_file)){echo " <span style='color:red'><b>YAZILABİLİR</b></span>";}else {echo " <span style='color:red'><b>YAZILAMAZ</b></span>";}
+	echo "<span style='color:green'><b>DOSYA VAR,</b></span>";
+	if (is_writable($data_file)){echo " <span style='color:green'><b>YAZILABİLİR</b></span>";}else {echo " <span style='color:red'><b>YAZILAMAZ</b></span>";}
 	}
-	else {echo "<span style='color:red'><b>YOK,</b></span>";}?>
+	else {echo "<span style='color:red'><b>DOSYA YOK,</b></span>";}?>
 </td>
 </tr>
 
