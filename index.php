@@ -1,53 +1,89 @@
 <?PHP
 session_start();
-/************************************
+ob_start();
+/*========================================
  aSgbookPHP
- akcanSoft Guestbook PHP v2.4.160918
+ akcanSoft Guestbook PHP v2.5.191102 1530
  
- 18/09/2016
- © 2003-2016 Mesut Akcan
+ © 2003-2019 Mesut Akcan
  
  makcan@gmail.com
  http://www.akcanSoft.com
- http://youtube.com/akcansoft
+ http://youtube.com/mesutakcan
  http://facebook.com/akcansoft
  http://twitter.com/akcansoft
 
 ==> Neler Yeni <===
-* İşlem sonrası bekleyen sayfalarda otomatik ana sayfaya yönlendirme
-Yönlendirme süresi $yonlen değişkenindeki 10 sn'lik süre kadardır
-Değişiklik yapılabilir.
- 
-*************************************/
+* Mesaj gönderimini geçici devre dışı bırakma özelliği eklendi
+* Mesaj düzenleme ve silme işlemi sonunda 1. sayfa açılıyordu. Mesajın olduğu sayfa açılıyor.
+* Mesaj düzenlenip gönderildikten sonra şablon varsayılan oluyordu. Düzeltildi.
+* Kodlarda iyileştirmeler yapıldı. PHP 7'ye uygun değişiklikler yapıldı
+
+==> YAPILACAKLAR <===
+* Otomatik yönlendirmede 'beklemek istemiyorsan tıkla' yaz.
+* Dosyaya yazmada hata varsa başta belirt
+* SAYFA NUMARASI LİNKTEKİ SAYFA NO İLE AYNI DEĞİL
+* SAYFA ŞABLONUNU COOKIE OLARAK KAYDET VE OKU
+* Mesaj şablonunu düzenleme ekle
+* Mesajda izin verilen etiketleri belirle #edit# #name# #yer# #time# #email# #web# #ip# gibi
+* Github üzerinden sürüm kontrolü
+=========================================*/
+
+//error_reporting(0); // Hata raporlama tamamen kapalı
+//error_reporting(E_ALL); // Tüm hataları göster
+//error_reporting(E_ERROR | E_WARNING | E_PARSE); // Basit çalışma hatalarını göster
+//error_reporting(E_ALL ^ E_NOTICE); // Notice Hataları hariç tüm hataları göster
+//error_reporting(E_ALL ^ E_WARNING); // Warning Hataları hariç tüm hataları göster
 //error_reporting(E_ERROR | E_PARSE);
-//error_reporting(0);
-error_reporting(error_reporting() & ~E_NOTICE);
+error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 
 $config_file = "ayarlar.php";
 $tmpdir ="templates/";
 
+global $setok;
+global $pname;
+global $homepage;
+global $template;
+global $templateselectable;
+global $admin_email;
+global $chrset;
+global $tformat;
+global $msgcnt;
+global $mpp;
+global $linkkonum;
+global $sf;
+global $wait_time;
+global $gk;
+global $gkks;
+global $htmltags;
+global $web2link;
+global $data_file;
+global $admin_pwd;
+global $sendmsg2me;
+global $entersil;
+global $mesajiptal;
+
 include ($config_file);
-$_SESSION['kod'] = session_id();
+//$_SESSION['kod'] = session_id(); // Resimli güvenlik kodu içindi. İptal
 $sca = "aSgbookPHP v";
-$ver = "2.4.160918";
+$ver = "2.5.191101";
 $scradr = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
-$yonlen = "Refresh: 10; url=$scradr"; // ana sayfaya yönlendirme kodu
 
-// sayfa no
-$pno=(int)$_GET['pno'];
+$pno=isset($_GET['pno']) ? (int)$_GET['pno'] : 0; // sayfa no
 if ($pno<=0){$pno=0;}
-
-if ($templateselectable == 1){
-	if (isset($_GET['sd'])){ // sayfa şablonu
+$sd=''; // sayfa şablonu
+if ($templateselectable == 1){ // "Ziyaretçi şablonu değiştirebilir" ayarlıysa
+	if (isset($_GET['sd'])){
 		$sd = htmkodsil($_GET['sd']);
 		if(file_exists($tmpdir.$sd."/index.htm")){
 			$template=$sd;
 		}
 		else{
-			unset ($sd);
+			$sd='';
 		}
 	}
 }
+$yonlen = "Refresh: 5; url=$scradr?sd=$sd"; // ana sayfaya yönlendirme kodu
 if ($template == ''){$template='notebook';} // şablon belirtilmemişse şablon notebook
 $l = isset($_GET['l']) ? intval($_GET['l']) : null; // onay bekleyen mesajları filtrele = 1, tümü = 0
 $r_pwd = isset($_SESSION['reg_pwd']) ? $_SESSION['reg_pwd'] : null;
@@ -58,7 +94,7 @@ if ((($admin_pwd == $r_pwd) and (isset($r_pwd))) OR (($admin_pwd == $c_pwd) and 
 	$admin=TRUE;
 	$admin_msg = "Çıkış";
 	$log = "out";
-	$mno=(int)$_REQUEST['mno'];
+	$mno=isset($_REQUEST['mno']) ? (int)$_REQUEST['mno'] : 0;
 }
 else{
 	$admin=FALSE;
@@ -70,13 +106,17 @@ else{
 
 $btn_msj="<a class=buton href='$scradr'>Mesajlar</a>";
 $btn_ayar="<a class=buton href='$scradr?a=ayar'>Ayarlar</a>";
-$a=htmkodsil($_REQUEST['a']); 
+$a=isset($_REQUEST['a']) ? htmkodsil($_REQUEST['a']) : "";
+//$a=htmkodsil($a); 
 $cde="http://www.akcansoft.com";
+
+// mesaj yaz linki
+// $lnk_msj_gnd = "<a class=buton3 href='?a=form$eksd'>Mesaj Yaz</a> ";
 
 switch ($a){
 case "login": // Yönetici giriş form 
     sayfabasligi("Yönetici Giriş Formu");
-	$h = isset($_COOKIE['hatirla']) ? (int)$_COOKIE['hatirla'] : null;
+	//$h = isset($_COOKIE['hatirla']) ? (int)$_COOKIE['hatirla'] : null;
     echo "<div class='baslik'>asGbookPHP Yönetici Giriş</div><form method='POST'><input type='hidden' name='a' value='login2'><table><tr><td align='right'>Yönetici Parolası:</td><td><input type='password' name='pass'> <input type='submit' value='Gönder' class='buton3'></td></tr><tr><td> </td><td><label><input name='hatirla' type='checkbox' value=1>Beni hatırla</label></td></tr></table></form>";
     break;
 case "login2": // YÖNETİCİ GİRİŞ 
@@ -111,6 +151,10 @@ case "form": // Mesaj Yazma Formu ***********************
 		echo "Üzgünüm :(<div class=satir>Geçersiz işlem !</div><a class=buton href='../'>Mesajlar</a>";
 		break;
 	}
+	if ($mesajiptal == 1){ // mesaj gönderme devre dışı ise
+		echo "Üzgünüm :(<div class=satir>Mesaj gönderme geçici olarak devre dışıdır !</div><a class=buton href='./'>Mesajlar</a>";
+		break;
+	}
 	if (isset($_COOKIE["sgs"])){  // sgs=son gönderi saati
 		$tf=time()-$_COOKIE["sgs"];
 	}
@@ -124,7 +168,7 @@ case "form": // Mesaj Yazma Formu ***********************
 		$data = implode('',file("form_mesajgonder.h"));
 		$butonm = "value=' Mesajı gönder '";
 		if (!(is_writable($data_file))){ // data dosyası kaydedilebilir değilse
-			$data .= "<font color=red><b>Data dosyasına yazma sorunu nedeniyle mesaj kaydedilemeyecek !</b></font><br><br>";
+			$data .= "<span style='color:red'><b>Data dosyasına yazma sorunu nedeniyle mesaj kaydedilemeyecek !</b></span><br><br>";
 			$butonm .= " disabled=disabled title='Data dosyasına kayıt sorunu var'";
 		}
 		if ($msgcnt !=0){ // mesajlar kontrol edilecekse
@@ -135,7 +179,7 @@ case "form": // Mesaj Yazma Formu ***********************
 			elseif ($gkks>5){$gkks=5;}
 			$gkod = strtoupper(substr(md5(rand(0,999999)),-1 * $gkks));
 			$_SESSION['sgk'] = $gkod; // gkodunu oturuma kaydet
-			$gkodyerine = "<tr><td valign=top>Güvenlik kodu</td><td><input type=text id='txtgk' name='txtgk' size=5> <font face='Times' color=#FFFFFF size=4><b><span style='background-color:#000080'>&nbsp;$gkod &nbsp;</span></b></font><font size=1>&nbsp;yandaki kodun aynısını giriniz.</font></td></tr>";
+			$gkodyerine = "<tr><td valign='top'>Güvenlik kodu:</td><td><input type='text' id='txtgk' name='txtgk' size=5> <b><span style='font-family:Times; color:#FFF; font-size: 20px; background-color:#008; padding:0px 10px;'>$gkod</span></b> <span style='font-size:12px'>yandaki kodun aynısını giriniz.</span></td></tr>";
 		}
 		$ifadeliste = file("img/ifade/liste.txt");
 		$ifadeyerine='';
@@ -162,7 +206,8 @@ case "form": // Mesaj Yazma Formu ***********************
 	}
 	else{ // yeni mesaj için bekleme süresi dolmadıysa
 		$bekleme = $wait_time - $tf;
-		echo "<div class=satir>Üzgünüm Yeni bir mesaj yazmak için <b><span id='gerisay'>$bekleme</span></b> saniye beklemelisiniz</div><script type='text/javascript' src='gerisayma.js'></script><br>$btn_msj";
+		// $lnk_msj_gnd = "<a class=buton3 href='?a=form$eksd'>Mesaj Yaz</a> ";
+		echo "<div class=satir>Üzgünüm :(<br>Yeni bir mesaj yazmak için <b><span id='gerisay'>$bekleme</span></b> saniye beklemelisiniz</div><script type='text/javascript' src='gerisayma.js'></script><br>$btn_msj"; // $lnk_msj_gnd";
 		}
 	echo "</div>";
     break;
@@ -183,13 +228,14 @@ case "edit": // Mesaj Düzenleme Formu  *************************
 		$frm_ek .= "<input type='hidden' name='ra' value='$ra'>"; // ip no
 		$frm_ek .= "<input type='hidden' name='mno' value='$mno'>";
 		$frm_ek .= "<input type='hidden' name='check' value='$check'>";
-		$frm_ek .= "<input type='checkbox' name='sil' value='YES'><font color='red'>Mesajı Sil</font>";
+		$frm_ek .= "<input type='checkbox' name='sil' value='YES'><span style='color:red'>Mesajı Sil</span>";
 		$frm_ek .= "<br><input type='checkbox' name='check' value='YES'";
 		if ($check == 1){$frm_ek .=" checked";}
-		$frm_ek .= "><font color='green'>Mesajı Onayla</font>";
+		$frm_ek .= "><span style='color:green'>Mesajı Onayla</span>";
 		$mesaj = str_replace("<br>","\n",$mesaj);
 		$mesaj = str_replace('#S#' , "\n" , $mesaj);
 		$ifadeliste = file("img/ifade/liste.txt");
+		$ifadeyerine="";
 		foreach ($ifadeliste as $satir){
 			list($ifade,$dosya) = explode("\t",$satir,2);
 			$ifadeyerine .= "<a href=\"javascript:;\" onClick=\"javascript:yyaz('$ifade','')\"><img src=\"img/ifade/$dosya\" title=\"$ifade\"></a> ";
@@ -228,8 +274,8 @@ case "post": // Gönder - Kaydet *************************
 		$email=$_POST['email'];
 		$web = $_POST['web'];
 		if (strlen($name) > 25){$name=substr($name,0,25);}
-		if (!filter_var($email, FILTER_VALIDATE_EMAIL)){unset ($email);}
-		if (!filter_var($web, FILTER_VALIDATE_URL)){unset ($web);}
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)){$email='';}
+		if (!filter_var($web, FILTER_VALIDATE_URL)){$web='';}
 		if (strlen($yer) > 25){$yer=substr($yer,0,25);}
 		$mesaj = stripslashes($_POST['mesaj']);
 		$mesaj = str_replace("||","&#124;&#124;",$mesaj);
@@ -255,7 +301,7 @@ case "post": // Gönder - Kaydet *************************
 		setcookie("sgs", time(), time()+$wait_time); 
 		// yöneticiye e-maili var ve mesaj yöneticiye e-maille gönderilecekse
 		if (($sendmsg2me == 1) and ($admin_email)){
-			$time = date($tformat,($sf*60+$time));
+			$time = date($tformat,((int)$sf*60+(int)$time));
 			if ($email == ""){$email=$admin_email;}
 			$mail_mesaj .="\r\n\r\n--\r\nIP:$ip\r\nTARİH:$time\r\n$scradr\r\n";
 			mail($admin_email, "$pname ZD yeni mesaj $name", $mail_mesaj,
@@ -320,14 +366,11 @@ case "post2": // Değiştir/Sil & Kaydet ********************
 			}
 		flock($dp,3);
 		fclose($dp);
-		// mesaj silinmek istendiyse
-		if ($sil=="YES"){
-			$adr = "?pno=$pno";
-			if (isset($l)){$adr .="&l=$l";}
-			if (isset($sd)){$adr .="&sd=$sd";}
-			header("Location: $adr");
-		}
-		else{header("Location: $scradr");}
+		$_REQUEST['pno'];
+		$adr = "?pno=$pno";
+		if (isset($l)){$adr .="&l=$l";}
+		if (isset($sd)){$adr .="&sd=$sd";}
+		header("Location: $scradr$adr");
 	}
 	else{header ("Location: $scradr?a=login&sd=$sd");}
 	break;
@@ -358,6 +401,7 @@ case "onay": // Bekleyen Mesajı onayla
 	else{header ("Location: $scradr?a=login&sd=$sd");}
 	break;
 case "ayar": // Ayarlar Sayfası
+	$err=0;
 	if ($admin){
 		sayfabasligi ("Ziyaretçi Defteri Ayarları");
 		echo "<div class=baslik>$pname Ziyaretçi Defteri Ayarları</div>";
@@ -365,21 +409,21 @@ case "ayar": // Ayarlar Sayfası
 		echo "<div class=divb>";
 		if (file_exists($config_file)){
 			echo "<b>$config_file</b> dosyasının yazma özelliği: ";
-			if (is_writable($config_file)){echo "<font color=green><b>AÇIK</b></font>";}
+			if (is_writable($config_file)){echo "<span style='color:green'><b>AÇIK</b></span>";}
 			else {
-				echo "<font color=red><b>KAPALI</b></font><br>";
+				echo "<span style='color:red'><b>KAPALI</b></span><br>";
 				echo "Bu yüzden ayarları kaydedemeyeceksiniz.<br>Dosyaya yazma özelliği atayınız.";
 				$err=1;
 			}
 		}
 		else{
-			echo "<b>$config_file</b> dosyası: <font color=red><b>YOK</b></font><br>Dosyayı oluşturunuz";
+			echo "<b>$config_file</b> dosyası: <span style='color:red'><b>YOK</b></span><br>Dosyayı oluşturunuz";
 			$err=1;
 		}
 		// sürüm kontrolü
-		
 		/*********************
-		2.4 sürümünde iptal
+		2.4 sürümünden sonra sürüm kontrolü iptal edildi
+		// YAPILACAK : Github üzerinden sürüm kontrolü 
 		
 		$sonsurum = file_get_contents('http://www.akcansoft.com/versions/asgbookphp',FILE_TEXT);
 		if ($sonsurum != FALSE){
@@ -391,7 +435,7 @@ case "ayar": // Ayarlar Sayfası
 				echo "<div>Yeni sürümü <a href='http://akcansoft.com/asgbookphp_ziyaretcidefteri.htm'><b>script web sayfası</b></a>ndan indirebilirsiniz.</div>";
 			}
 			if ($ver2[2] == $sonsurum2[2]){
-				echo "<div><font color=green><b>Son sürümü kullanıyorsunuz</b></font></div>";
+				echo "<div><span style='color:green'><b>Son sürümü kullanıyorsunuz</b></span></div>";
 			}
 		}
 		***************************/
@@ -402,7 +446,8 @@ case "ayar": // Ayarlar Sayfası
 	break;
 case "ayarkaydet": // Ayarları kaydet
     if ($admin){
-		// YAPILACAK: şifre eşit değilse mesaj kutusu ile bildir.
+		// YAPILACAK: Şifre eşit değilse mesaj kutusu ile bildir.
+		// YAPILACAK: Şifreyi göster seçeneği ekle
 		if ($_POST['admin_pwd1'] != $_POST['admin_pwd2']){
 			hatamsj("HATA: Parolalar eşit değil !","Parolalar eşit değil !.");
 			break;
@@ -425,7 +470,7 @@ case "ayarkaydet": // Ayarları kaydet
 	 	flock($dp,3);
 	 	fclose($dp);
 	 	sayfabasligi("İşlem Tamam");
-	 	echo "<div class=satir>İşlem Tamam.<br>Ayarlar kaydedildi.</div><br>$btn_msj";
+	 	echo "<div class='satir'>İşlem Tamam.<br>Ayarlar kaydedildi.</div><br>$btn_msj";
 		yonlendir();
 	}
 	else{header ("Location: $scradr?a=login&sd=$sd");}
@@ -447,11 +492,11 @@ case "otms": // onaylanmamış tüm mesajları sil
 		}
 		flock($dp,3);
 		fclose($dp);
-		header("Location: $scradr");
+		header("Location: $scradr?&sd=$sd");
 	}
 	else{header ("Location: $scradr?a=login&sd=$sd");}
 	break;
-default: // Mesajları listele ******************************************
+default: // Mesajları listele
 	// congfig.php de $setok = 1 yoksa
 	if ($setok != 1){
 		// yönetici girişi yapıldı ise ayarlar sayfasına
@@ -463,15 +508,15 @@ default: // Mesajları listele ******************************************
 		if (file_exists($data_file)){
 			echo "<b>$data_file</b> dosyasına yazma özelliği: ";
 			if (is_writable($data_file)){
-				echo "<font color=green><b>AÇIK</b></font><br><br>";
+				echo "<span style='color:green'><b>AÇIK</b></span><br><br>";
 			}
 			else {
-				echo "<font color=red><b>KAPALI</b></font><br>Dosyaya yazma özelliği atayınız. Mesajların kaydedilmesi için bu gerekli.<br>";
+				echo "<span style='color:red'><b>KAPALI</b></span><br>Dosyaya yazma özelliği atayınız. Mesajların kaydedilmesi için bu gerekli.<br>";
 				$err=1;
 			}
 		}
 		else{
-			echo "<b>$data_file</b> dosyası: <font color=red><b>YOK</b></font><br>Dosyayı oluşturunuz";
+			echo "<b>$data_file</b> dosyası: <span style='color:red'><b>YOK</b></span><br>Dosyayı oluşturunuz";
 			$err=1;
 		}
 		// Dosyada sorun yoksa
@@ -479,13 +524,13 @@ default: // Mesajları listele ******************************************
 			// Kuruluma devam et
 			echo "Yönetici girişi yapıp ziyaretçi defteri ayarlarını düzenleyiniz.<br><br>";
 			echo "İlk kurulum yönetici parolası <b>admin</b> 'dir.<br>Parolayı değiştirmeyi unutmayınız.<br><br>";
-			echo "<font color=red><b>Devam etmek için sayfayı en alta kaydırınız.</b></font>";
+			echo "<span style='color:red'><b>Devam etmek için sayfayı en alta kaydırınız.</b></span>";
 			include ("README_TR.htm");
 			echo "<a class='buton' href='$scradr?a=login'> Devam </a>";
 		}
 		// Dosyalarda sorun varsa. Kuruluma devam etme
 		else{
-			echo "<br><br><font color=red>Kurulum devam edemiyor !</font>";
+			echo "<br><br><span style='color:red'>Kurulum devam edemiyor !</span>";
 		}
 		exit;
 	}
@@ -506,28 +551,32 @@ default: // Mesajları listele ******************************************
 	else{
 		$msg_count = 0;
 	}
-	if (isset($l)){$ekl="&l=$l";}
-	if (isset($sd)){$eksd="&sd=$sd";}
+	if (isset($l)){$ekl="&l=$l";} else {$ekl="";} // linke eklenecek &l=
+	if (isset($sd)){$eksd="&sd=$sd";} else {$eksd="";} // linke eklenecek &sd=
 	// önceki butonu
 	if($pno==0){ // sayfa no 0 ise önceki linki pasif
-		$lnk_onceki_btn = "<font class=buton color='#AAAAAA'>&laquo; Önceki</font>";
+		$lnk_onceki_btn = "<span class='buton'  span style='color:#aaa'>&laquo; Önceki</span>";
 	}
 	else{
 		$gcc = $pno-1;	// $gcc -> 	geçici sayfa no
-		$lnk_onceki_btn = "<a class=buton href='?pno=$gcc$ekl$eksd'>&laquo; Önceki</a>";
+		$lnk_onceki_btn = "<a class='buton' href='?pno=$gcc$ekl$eksd'>&laquo; Önceki</a>";
 	}
 	$gcc = $pno * $mpp + $mpp;
 	// sonraki butonu
-	if ($msg_count > $gcc){ // Son sayfada ise sonraki linki pasif
+	if ($msg_count > $gcc){ 
 		$gcc = $pno + 1;
-		$lnk_sonraki_btn = "<a class=buton href='?pno=$gcc$ekl$eksd'>Sonraki &raquo;</a>";
+		$lnk_sonraki_btn = "<a class='buton' href='?pno=$gcc$ekl$eksd'>Sonraki &raquo;</a>";
 	}
-	else {
-		$lnk_sonraki_btn = "<font class=buton color='#AAAAAA'>Sonraki &raquo;</font>";
+	else { // Son sayfada ise sonraki butonu pasif
+		$lnk_sonraki_btn = "<span class='buton' style='color:#aaa'>Sonraki &raquo;</span>";
 	}
 	// mesaj yaz linki
-	$lnk_msj_gnd = "<a class=buton3 href='?a=form$eksd'>Mesaj Yaz</a> ";
-	
+	if ($mesajiptal == 1){ // mesaj yazma kapalı ise link pasif
+		$lnk_msj_gnd = "<span style='color:#ddd; background-color:#bbb; padding:5px;'> Mesaj Yazma Kapalı ! </span> ";
+	}
+	else{
+		$lnk_msj_gnd = "<a class='buton3' href='?a=form$eksd'>Mesaj Yaz</a> ";
+	}
 	// admin ise ayarlar linki ekle
 	if ($admin) {
 		$lnk_ayarlar = $btn_ayar;
@@ -541,19 +590,21 @@ default: // Mesajları listele ******************************************
 	// Sayfalar linklerini hazırla
 	$sayfasayisi = ceil($msg_count/$mpp);
 
+	$lnk_sayfalar="";
 	// 1. sayfa ve ...
 	if ($pno>2){
 		$lnk_sno=$sayfasayisi-1;
-		$lnk_sayfalar .="<a class=buton href='?pno=0$ekl$eksd'>1</a>...";
+		$lnk_sayfalar ="<a class=buton href='?pno=0$ekl$eksd'>1</a>...";
 	}
 	// sayfa no ve ona 2 yakın sayfa linkleri
 	$ilkr = $pno-2;$sonr = $pno+2;
 	if ($ilkr<0){$ilkr=0;}
 	if ($sonr>($sayfasayisi-1)){$sonr=($sayfasayisi-1);}
+	
 	for ($sn=$ilkr;$sn<=$sonr;$sn++){
 		$lnk_sno=$sn+1;
 		// sayfa numarası ise buton basık
-		if ($sn == $pno){$lnk_sayfalar .= "<font class=buton2>$lnk_sno</font>";}
+		if ($sn == $pno){$lnk_sayfalar .= "<span class=buton2>$lnk_sno</span>";}
         // buton normal
 		else{$lnk_sayfalar .= "<a class=buton href='?pno=$sn$ekl$eksd'>$lnk_sno</a>";}
 	}
@@ -562,14 +613,17 @@ default: // Mesajları listele ******************************************
 		$lnk_sno=$sayfasayisi-1;
 		$lnk_sayfalar .="...<a class=buton href='?pno=$lnk_sno$ekl$eksd'>$sayfasayisi</a>";
 	}
+	$lnk_otmg="";
+	$lnk_ony_tum="";
 	if ($admin){
-		if ($l == 0){$lnk_ony_tum = "<a class=buton href='$PHP_SELF?l=1&pno=$pno'>Yalnız onay bekleyenleri göster</a>";}
-		else{$lnk_ony_tum = "<a class=buton href='$PHP_SELF?pno=$pno'>Tümünü göster</a>";}
-		$lnk_otmg = " <a class=buton href='$PHP_SELF?a=otms'>Onaylanmamış tüm mesajları sil</a>";
+		if ($l == 0){$lnk_ony_tum = "<a class=buton href='$scradr?l=1&pno=$pno$eksd'>Yalnız onay bekleyenleri göster</a>";}
+		else{$lnk_ony_tum = "<a class=buton href='$scradr?pno=$pno$eksd'>Tümünü göster</a>";}
+		$lnk_otmg = " <a class=buton href='$scradr?a=otms$eksd'>Onaylanmamış tüm mesajları sil</a>";
 	}
-	// Tema listesi gösterilecekse tema listesi oluştur.
+	$frm_sablon_sec='';
+	// Şablon listesi gösterilecekse şablon listesi oluştur.
 	if ($templateselectable == 1){
-		$frm_sablon_sec = "<form>Sayfa Şablonu: <select size=1 name=sd>";
+		$frm_sablon_sec = "<form>Sayfa Şablonu: <select size=1 name='sd'>";
 		$s = 0; $klasor = array();
 		if ($dizin = opendir($tmpdir)){
 			while (false !== ($dosya = readdir($dizin))) {
@@ -585,7 +639,7 @@ default: // Mesajları listele ******************************************
 				if ($template == $skn ){$frm_sablon_sec .= " selected";}
 				$frm_sablon_sec .= ">$skn</option>";
 			}
-			$frm_sablon_sec .= "<input class=buton3 type=submit value='Seç'></select></form>";
+			$frm_sablon_sec .= "<input class='buton3' type='submit' value='Değiştir'></select></form>";
 		}
 	}
 	
@@ -626,13 +680,21 @@ default: // Mesajları listele ******************************************
 			if (($msgcnt == 2) and ($check == 0) and (!$admin)){continue;}
 			// Ad girilmemişse Adsız yaz
 			if ($name==""){$name="Adsız";}
-			$time = date($tformat,($sf*60+$time));
-			// code arasını kodla
-			$mesaj = preg_replace("'\<CODE\>(.*?)\</CODE\>'ie" , "'<div class=satir><b><u>KOD:</u></b></div><CODE>'.htmlspecialchars('\\1').'</CODE>'" ,$mesaj);
-			$mesaj = htmkodsil($mesaj,$htmltags."<CODE><br>");
-			$mesaj = preg_replace("'\[CEVAP\](.*?)\[/CEVAP\]'ie" , "'<div class=satir><b><u>Cevap:</u></b></div><div class=cevap>\\1</div>'" , $mesaj);
-			$mesaj = str_replace('&lt;br&gt;' , "<br>" , $mesaj);
+			$time = date($tformat,((int)$sf*60+(int)$time));
+			
+			// CODE arasını kodla
+			$mesaj = htmlspecialchars($mesaj);
+			$mesaj = preg_replace("|&lt;CODE&gt;(.*?)&lt;/CODE&gt;|i" , "<div class=satir><b><u>KOD:</u></b></div><pre><CODE>$1</CODE></pre>" ,$mesaj);
 
+			$mesaj = preg_replace("|\[CEVAP\](.*?)\[\/CEVAP\]|i" , '<div class=satir><b><u>Cevap:</u></b></div><div class=cevap>$1</div>' , $mesaj);
+			$mesaj = str_ireplace('&lt;b&gt;' , "<b>" , $mesaj);
+			$mesaj = str_ireplace('&lt;u&gt;' , "<u>" , $mesaj);
+			$mesaj = str_ireplace('&lt;i&gt;' , "<i>" , $mesaj);
+			$mesaj = str_ireplace('&lt;/b&gt;' , "</b>" , $mesaj);
+			$mesaj = str_ireplace('&lt;/u&gt;' , "</u>" , $mesaj);
+			$mesaj = str_ireplace('&lt;/i&gt;' , "</i>" , $mesaj);
+			$mesaj = str_ireplace('&lt;br&gt;' , "<br>" , $mesaj);		
+			
 			$mesaj = stripslashes($mesaj);
 			// ifadeleri resme dönüştür
 			$mesaj = strtr($mesaj,$yeniifadeliste);
@@ -650,15 +712,15 @@ default: // Mesajları listele ******************************************
 				if (isset($l)){$ekl="&l=$l";}
 				if (isset($sd)){$eksd="&sd=$sd";}
 				// mesaj onaylı değilse
-				if ($check != 1){$mesaj = "<font color=red><b>MESAJ ONAY BEKLİYOR !</b></font><br>$mesaj";}
+				if ($check != 1){$mesaj = "<span style='color:red'><b>MESAJ ONAY BEKLİYOR !</b></span><br>$mesaj";}
 				$admno = $lno+1;
-				$replace  ="$admno <a href='?a=edit&mno=$lno'><img border=0 src='img/ed.gif' title='Düzenle'></a> ";
+				$replace  ="$admno <a href='?a=edit&mno=$lno&pno=$pno$eksd'><img border=0 src='img/ed.gif' title='Düzenle'></a> ";
 				$replace .="<a href='?a=post2&pno=$pno$ekl$eksd&mno=$lno&sil=YES'>";
 				$replace .="<img border=0 src='img/del.gif' title='Sil'></a> ";
 				if ($check == 0){$replace .= "<a href='?a=onay&mno=$lno&pno=$pno$ekl$eksd'><img border=0 src='img/ok.gif' title='Onayla'></a>";}
 			}
 			else {
-				if ($check==0){$mesaj = "<font color=red><b>MESAJINIZ ONAY BEKLİYOR !</b></font>";}
+				if ($check==0){$mesaj = "<span style='color:red'><b>MESAJINIZ ONAY BEKLİYOR !</b></span>";}
 				$replace='';
 				// ip'in son rakamlarını ### e dönüştür
 				$ip = preg_replace("/(\d+)\.(\d+)\.(\d+)\.(\d+)/","$1.$2.$3.###",$ip);
@@ -681,7 +743,7 @@ default: // Mesajları listele ******************************************
 	else{echo "Kayıtlı mesaj yok";}
 	if ($linkkonum != 1){echo "<br>$links";}
 }
-echo "<hr width=50% noshade size=1><span style='background-color:#DDDDDD;font-size: 8pt;'> <a href='$cde'>$sca$ver</a></div></body></html>";
+echo "<hr width='50%' noshade size=1><span style='background-color:#ddd;font-size:8pt;'> <a href='$cde'>$sca$ver</a></div></body></html>";
 exit;
 
 // FONKSİYONLAR 
@@ -695,7 +757,7 @@ global $yonlen;
 <script>
 var elem = document.getElementById("pbar");
 var width = 1;
-var id = setInterval(frame, 100);
+var id = setInterval(frame, 50);
 function frame() {
 if (width >= 100) {
 clearInterval(id);
@@ -724,35 +786,22 @@ function hatamsj ($ptitle,$hmesaj){
 
 /// kodları temizle
 function htmkodsil ($postcode,$htmtag='') {
-  $postcode = strip_tags($postcode,$htmtag);
-  $postcode = str_replace("||","",$postcode);
-  return $postcode;
+	$postcode = strip_tags($postcode,$htmtag);
+	$postcode = str_replace("||","",$postcode);
+	return $postcode;
 }
 
 /// Kullanıcı IP adresi
 function userip(){
-	if (isSet($_SERVER)){
-		if (isSet($_SERVER["HTTP_X_FORWARDED_FOR"])){
-			$IP = $_SERVER["HTTP_X_FORWARDED_FOR"];
-		}
-		elseif (isSet($_SERVER["HTTP_CLIENT_IP"])){
-			$IP = $_SERVER["HTTP_CLIENT_IP"];
-		}
-		else {
-			$IP = $_SERVER["REMOTE_ADDR"];
-		}
-	}
-	else {
-		if ( getenv('HTTP_X_FORWARDED_FOR')){
-			$IP = getenv('HTTP_X_FORWARDED_FOR');
-		} 
-		elseif (getenv('HTTP_CLIENT_IP')){
-			$IP = getenv('HTTP_CLIENT_IP');
-		}
-		else {
-			$IP = getenv('REMOTE_ADDR');
-		}
-	}
-	return $IP;
-}
+if(isSet($_SERVER)){
+if(isSet($_SERVER["HTTP_X_FORWARDED_FOR"])){
+$IP=$_SERVER["HTTP_X_FORWARDED_FOR"];
+}elseif(isSet($_SERVER["HTTP_CLIENT_IP"])){
+$IP=$_SERVER["HTTP_CLIENT_IP"];}
+else{$IP=$_SERVER["REMOTE_ADDR"];}}
+else{if(getenv('HTTP_X_FORWARDED_FOR')){
+$IP=getenv('HTTP_X_FORWARDED_FOR');} 
+elseif(getenv('HTTP_CLIENT_IP')){$IP=getenv('HTTP_CLIENT_IP');}
+else{$IP=getenv('REMOTE_ADDR');}}
+return $IP;}
 ?>
