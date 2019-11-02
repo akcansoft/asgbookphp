@@ -9,6 +9,6 @@ PHP dilinde yazılmış kullanımı ve kurulumu basit bir ziyaretçi defteri scr
 mySQL veritabanı kullanmadığı için PHP destekli birçok sunucuda kullanılabilir.
 Kişisel sitelerde kullanımı bedavadır. Kuralları ve yardımı okuyunuz.
 
-Ziyaretçi Defterim'in son sürümünün kurulu olduğu sayfa: https://akcansoft.comli.com/zd/
-asgbookphp Ziyaretçi Defteri Kurulum videosu: https://www.youtube.com/watch?v=xba5n0YUoe0
-Ayrıntılı açıklamalı sayfa: http://www.akcansoft.com/2015/04/akcansoft-ziyaretci-defteri.html
+Ziyaretçi Defterim'in son sürümünün kurulu olduğu sayfa: https://akcansoft.comli.com/zd/ <br>
+asgbookphp Ziyaretçi Defteri Kurulum videosu: https://www.youtube.com/watch?v=xba5n0YUoe0 <br>
+Ayrıntılı açıklamalı sayfa: http://www.akcansoft.com/2015/04/akcansoft-ziyaretci-defteri.html 
