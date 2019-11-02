@@ -1,4 +1,4 @@
-﻿<style type="text/css">
+<style type="text/css">
 .frm a{font:12px Verdana}
 .frm a:hover {position: relative;} 
 .frm a[data]:hover:after {
@@ -24,7 +24,7 @@ function dakika() {
 }
 </script>
 
-<div class=frm>
+<div class="frm">
 <form method="POST">
 <input type=hidden name="a" value="ayarkaydet">
 <input type=hidden name="setok" value="1">
@@ -125,7 +125,7 @@ Evet
 <a data='Mesaj onaylı kaydedilir ve onay beklemeden yayınlanır'><img src="img/tooltip.gif"></a> 
 
 <br>
-<input type="radio" value="1" name="msgcnt" <?php if ($msgcnt==1){echo "checked";} ?>>&quot;<font color="#FF0000">Mesajınız Onay Bekliyor</font>&quot; yaz
+<input type="radio" value="1" name="msgcnt" <?php if ($msgcnt==1){echo "checked";} ?>>&quot;<span style='color:red'>Mesajınız Onay Bekliyor</span>&quot; yaz
 <a data='Mesaj içeriği onaylanana kadar görünmez. Mesaj içeriği dışındaki bilgiler görünür.Mesaj onay bekliyor uyarı yazısı görünür.'><img src="img/tooltip.gif"></a>
 
 
@@ -219,21 +219,32 @@ Birden çok boş satırı engelle</td>
 <a data='İşaretli ise mesajlardaki birden çok sayıda entere basılmışsa bunları tek entere dönüştürür. Böylece fazladan boş satırlar silinir.'><img src="img/tooltip.gif"></a>
 </td>
 </tr>
-<tr>
-<td>
-Mesaj data dosyası</td>
-<td>
-<input name="data_file" value="<?PHP echo $data_file; ?>"> 
-<a data='Mesajların kaydedildiği data dosyası adı. VAR ve YAZILABİLİR olması gerekir'><img src="img/tooltip.gif"></a>
 
-<br>
-<?PHP 
-if (file_exists($data_file)){
-echo '<font color=green><b>VAR,</b></font>';
-if (is_writable($data_file)){echo ' <font color=green><b>YAZILABİLİR</b></font>';}else {echo " <font color=red><b>YAZILAMAZ</b></font>";}
-}
-else {echo "<font color=red><b>YOK,</b></font>";}
-?></td></tr></table>
+<tr>
+<td>Mesaj yazma devre dışı</td>
+
+<td>
+<input type="checkbox" name="mesajiptal" value="1" <?php if ($mesajiptal==1) {echo "checked";} ?>>Evet 
+<a data='İşaretli ise mesaj yazma özelliği devere dışı bırakılır.'><img src="img/tooltip.gif"></a>
+</td>
+</tr>
+
+<tr>
+<td>Mesaj data dosyası</td>
+<td>
+	<input name="data_file" value="<?PHP echo $data_file; ?>"> 
+	<a data='Mesajların kaydedildiği data dosyası adı. VAR ve YAZILABİLİR olması gerekir'><img src="img/tooltip.gif"></a>
+	<br>
+	<?PHP 
+	if (file_exists($data_file)){
+	echo '<span style='color:green'><b>VAR,</b></span>';
+	if (is_writable($data_file)){echo " <span style='color:red'><b>YAZILABİLİR</b></span>";}else {echo " <span style='color:red'><b>YAZILAMAZ</b></span>";}
+	}
+	else {echo "<span style='color:red'><b>YOK,</b></span>";}?>
+</td>
+</tr>
+
+</table>
 <input class="buton3" type="submit" value="Ayarları Kaydet">
 <input class="buton3" type="button" value="&lt;&lt; Geri dön" onclick="history.back();">
 </form>
