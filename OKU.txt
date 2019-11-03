@@ -1,26 +1,31 @@
-akcanSoft Ziyaretçi Defteri
-asGbookPhp - PHP Guestbook Script v2.4
+akcanSoft ZiyaretÃ§i Defteri
+asGbookPhp - PHP Guestbook Script v2.5
+3 KasÄ±m 2019
 
-18 Eylül 2016
-© 2003-2016
-Mesut Akcan
-www.akcansoft.com - makcan@gmail.com
+makcan@gmail.com
+
+www.akcansoft.com 
 www.youtube.com/mesutakcan
 www.facebook.com/akcansoft
 www.twitter.com/akcansoft
 
-Tanımlama
+TanÄ±mlama
 ---------
-PHP dilinde yazılmış kullanımı ve kurulumu basit bir Ziyaretçi defteri scriptidir.
-mySQL veritabanı kullanmadığı için PHP destekli birçok sunucuda kullanılabilir.
+PHP dilinde yazÄ±lmÄ±ÅŸ kullanÄ±mÄ± ve kurulumu basit bir ZiyaretÃ§i defteri scriptidir.
+mySQL veritabanÄ± kullanmadÄ±ÄŸÄ± iÃ§in PHP destekli birÃ§ok sunucuda kullanÄ±labilir.
 
 Neler yeni?
 -----------
-v2.4: 18/09/2016
-* İşlem sonrası bekleyen sayfalarda otomatik ana sayfaya yönlendirme.
-Yönlendirme süresi $yonlen değişkenindeki 10 sn'lik süre kadardır
-Değişiklik yapılabilir.
+v2.5: 03/11/2019
+* Mesaj gÃ¶nderimini geÃ§ici devre dÄ±ÅŸÄ± bÄ±rakma Ã¶zelliÄŸi eklendi
+* Mesaj dÃ¼zenleme ve silme iÅŸlemi sonunda 1. sayfa aÃ§Ä±lÄ±yordu. MesajÄ±n olduÄŸu sayfa aÃ§Ä±lÄ±yor.
+* Mesaj dÃ¼zenlenip gÃ¶nderildikten sonra ÅŸablon varsayÄ±lan oluyordu. DÃ¼zeltildi.
+* Kodlarda iyileÅŸtirmeler yapÄ±ldÄ±. PHP 7'ye uygun deÄŸiÅŸiklikler yapÄ±ldÄ±
 
-Kurulum ve Detaylı açıklama:
-========
-README_TR.htm dosyasını inceleyiniz.
+Kurulum ve DetaylÄ± aÃ§Ä±klama:
+----------------------------
+README_TR.htm dosyasÄ±nÄ± inceleyiniz.
+
+--
+Â© 2003-2019
+Mesut Akcan
