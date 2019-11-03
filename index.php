@@ -3,7 +3,7 @@ session_start();
 ob_start();
 /*========================================
  aSgbookPHP
- akcanSoft Guestbook PHP v2.5.191102 1530
+ akcanSoft Guestbook PHP v2.5.191103 1530
  
  © 2003-2019 Mesut Akcan
  
@@ -20,8 +20,7 @@ ob_start();
 * Kodlarda iyileştirmeler yapıldı. PHP 7'ye uygun değişiklikler yapıldı
 
 ==> YAPILACAKLAR <===
-* Otomatik yönlendirmede 'beklemek istemiyorsan tıkla' yaz.
-* Dosyaya yazmada hata varsa başta belirt
+* data Dosyasına yazmada hata varsa başta belirt
 * SAYFA NUMARASI LİNKTEKİ SAYFA NO İLE AYNI DEĞİL
 * SAYFA ŞABLONUNU COOKIE OLARAK KAYDET VE OKU
 * Mesaj şablonunu düzenleme ekle
@@ -35,7 +34,7 @@ ob_start();
 //error_reporting(E_ALL ^ E_NOTICE); // Notice Hataları hariç tüm hataları göster
 //error_reporting(E_ALL ^ E_WARNING); // Warning Hataları hariç tüm hataları göster
 //error_reporting(E_ERROR | E_PARSE);
-error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
+//error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 
 $config_file = "ayarlar.php";
 $tmpdir ="templates/";
@@ -63,10 +62,17 @@ global $sendmsg2me;
 global $entersil;
 global $mesajiptal;
 
-include ($config_file);
+if(file_exists($config_file)){
+	include ($config_file);
+	}
+else{
+	hatamsj("HATA: Ayarlar dosyası bulunamadı",
+	"Ayarların kaydedildiği <b>$config_file</b> dosyası bulunamadı !");
+	exit;
+}
 //$_SESSION['kod'] = session_id(); // Resimli güvenlik kodu içindi. İptal
 $sca = "aSgbookPHP v";
-$ver = "2.5.191101";
+$ver = "2.5.191103";
 $scradr = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
 
 $pno=isset($_GET['pno']) ? (int)$_GET['pno'] : 0; // sayfa no
@@ -75,12 +81,8 @@ $sd=''; // sayfa şablonu
 if ($templateselectable == 1){ // "Ziyaretçi şablonu değiştirebilir" ayarlıysa
 	if (isset($_GET['sd'])){
 		$sd = htmkodsil($_GET['sd']);
-		if(file_exists($tmpdir.$sd."/index.htm")){
-			$template=$sd;
-		}
-		else{
-			$sd='';
-		}
+		if(file_exists($tmpdir.$sd."/index.htm")){$template=$sd;}
+		else{$sd='';}
 	}
 }
 $yonlen = "Refresh: 5; url=$scradr?sd=$sd"; // ana sayfaya yönlendirme kodu
@@ -90,42 +92,27 @@ $r_pwd = isset($_SESSION['reg_pwd']) ? $_SESSION['reg_pwd'] : null;
 $c_pwd = isset($_COOKIE['c_pwd']) ? $_COOKIE['c_pwd'] : null;
 
 // doğru parola ile giriş yapıldıysa
-if ((($admin_pwd == $r_pwd) and (isset($r_pwd))) OR (($admin_pwd == $c_pwd) and (isset($c_pwd)))){ 
-	$admin=TRUE;
-	$admin_msg = "Çıkış";
-	$log = "out";
-	$mno=isset($_REQUEST['mno']) ? (int)$_REQUEST['mno'] : 0;
-}
-else{
-	$admin=FALSE;
-	unset($l);
-	unset($mno);
-	$admin_msg = "Giriş";
-	$log = "in";
-}
+if ((($admin_pwd == $r_pwd) and (isset($r_pwd))) OR (($admin_pwd == $c_pwd) and (isset($c_pwd)))){
+	$admin=TRUE;$admin_msg = "Çıkış";$log = "out";$mno=isset($_REQUEST['mno']) ? (int)$_REQUEST['mno'] : 0;}
+else{$admin=FALSE;unset($l);unset($mno);$admin_msg = "Giriş";$log = "in";}
 
-$btn_msj="<a class=buton href='$scradr'>Mesajlar</a>";
-$btn_ayar="<a class=buton href='$scradr?a=ayar'>Ayarlar</a>";
+$btn_msj="<a class='buton' href='$scradr'>Mesajlar</a>";
+$btn_ayar="<a class='buton' href='$scradr?a=ayar'>Ayarlar</a>";
 $a=isset($_REQUEST['a']) ? htmkodsil($_REQUEST['a']) : "";
-//$a=htmkodsil($a); 
-$cde="http://www.akcansoft.com";
-
-// mesaj yaz linki
-// $lnk_msj_gnd = "<a class=buton3 href='?a=form$eksd'>Mesaj Yaz</a> ";
-
+$cde=base64_decode('aHR0cDovL3d3dy5ha2NhbnNvZnQuY29t');
 switch ($a){
 case "login": // Yönetici giriş form 
     sayfabasligi("Yönetici Giriş Formu");
-	//$h = isset($_COOKIE['hatirla']) ? (int)$_COOKIE['hatirla'] : null;
     echo "<div class='baslik'>asGbookPHP Yönetici Giriş</div><form method='POST'><input type='hidden' name='a' value='login2'><table><tr><td align='right'>Yönetici Parolası:</td><td><input type='password' name='pass'> <input type='submit' value='Gönder' class='buton3'></td></tr><tr><td> </td><td><label><input name='hatirla' type='checkbox' value=1>Beni hatırla</label></td></tr></table></form>";
     break;
 case "login2": // YÖNETİCİ GİRİŞ 
 	$pass=htmkodsil($_POST['pass']); // yönetici giriş parolası
 	if ($pass == $admin_pwd){  // girilen parola kayıtlı parola ile aynıysa
 		$_SESSION['reg_pwd'] = $admin_pwd;  // oturuma parolayı kaydet
-		if ((int) $_POST['hatirla'] == 1){$ct=time()+2600000;}
-		else{$ct=time()-3600;}
-		setcookie("c_pwd", $admin_pwd, $ct); 
+		if (isset($_POST['hatirla']) and (intval($_POST['hatirla'])== 1)){ // "Beni hatırla" işaretli ise
+			$cerez_suresi=time()+2600000;} // 1 ay hatırla
+		else{$cerez_suresi=time()-3600;} // unut
+		setcookie("c_pwd", $admin_pwd, $cerez_suresi); // çerez kaydı
 		sayfabasligi("Yönetici Giriş Kontrol");
 		echo "<div class=baslik>asGbookPHP Yönetici Giriş Kontrol</div>";
 		echo "<div class=divb>Yönetici girişi başlarıyla yapıldı</div><br>$btn_msj $btn_ayar";
@@ -146,13 +133,13 @@ case "logout": // Yönetici Çıkış *******************************
 	break;
 case "form": // Mesaj Yazma Formu ***********************
 	sayfabasligi("Yeni Mesaj Yaz");
-	echo "<noscript>Bu sayfa için JavaScript'e izin verilmelidir. Tarayıcı ayarlarını kontrol ediniz.<br><br>This page needs JavaScript activated to work.<br><br><a class=buton href='$scradr'>Ziyaretçi Defteri</a><style>div { display:none; }</style></noscript><div>";
+	echo "<noscript>Bu sayfa için JavaScript'e izin verilmelidir. Tarayıcı ayarlarını kontrol ediniz.<br><br>This page needs JavaScript activated to work.<br><br><a class='buton' href='$scradr'>Ziyaretçi Defteri</a><style>div { display:none; }</style></noscript><div>";
 	if  (strstr($scradr, 'index.php/')){
-		echo "Üzgünüm :(<div class=satir>Geçersiz işlem !</div><a class=buton href='../'>Mesajlar</a>";
+		echo "Üzgünüm :(<div class=satir>Geçersiz işlem !</div><a class='buton' href='../'>Mesajlar</a>";
 		break;
 	}
 	if ($mesajiptal == 1){ // mesaj gönderme devre dışı ise
-		echo "Üzgünüm :(<div class=satir>Mesaj gönderme geçici olarak devre dışıdır !</div><a class=buton href='./'>Mesajlar</a>";
+		echo "Üzgünüm :(<div class=satir>Mesaj gönderme geçici olarak devre dışıdır !</div><a class='buton' href='./'>Mesajlar</a>";
 		break;
 	}
 	if (isset($_COOKIE["sgs"])){  // sgs=son gönderi saati
@@ -167,8 +154,11 @@ case "form": // Mesaj Yazma Formu ***********************
 	if ($tf>$wait_time){ // Yeni mesaj yazmaj için bekleme süresi dolduysa
 		$data = implode('',file("form_mesajgonder.h"));
 		$butonm = "value=' Mesajı gönder '";
+		if(!(file_exists($data_file))){
+			$data .= "<div class='uyarimsj'>$data_file Data dosyası bulunamadığı için mesaj kaydedilemeyecek !</div><br>";
+		}
 		if (!(is_writable($data_file))){ // data dosyası kaydedilebilir değilse
-			$data .= "<span style='color:red'><b>Data dosyasına yazma sorunu nedeniyle mesaj kaydedilemeyecek !</b></span><br><br>";
+			$data .= "<div class='uyarimsj'>$data_file Data dosyasına yazma sorunu nedeniyle mesaj kaydedilemeyecek !</div></br>";
 			$butonm .= " disabled=disabled title='Data dosyasına kayıt sorunu var'";
 		}
 		if ($msgcnt !=0){ // mesajlar kontrol edilecekse
@@ -206,7 +196,7 @@ case "form": // Mesaj Yazma Formu ***********************
 	}
 	else{ // yeni mesaj için bekleme süresi dolmadıysa
 		$bekleme = $wait_time - $tf;
-		// $lnk_msj_gnd = "<a class=buton3 href='?a=form$eksd'>Mesaj Yaz</a> ";
+		// $lnk_msj_gnd = "<a class='buton3' href='?a=form$eksd'>Mesaj Yaz</a> ";
 		echo "<div class=satir>Üzgünüm :(<br>Yeni bir mesaj yazmak için <b><span id='gerisay'>$bekleme</span></b> saniye beklemelisiniz</div><script type='text/javascript' src='gerisayma.js'></script><br>$btn_msj"; // $lnk_msj_gnd";
 		}
 	echo "</div>";
@@ -417,7 +407,7 @@ case "ayar": // Ayarlar Sayfası
 			}
 		}
 		else{
-			echo "<b>$config_file</b> dosyası: <span style='color:red'><b>YOK</b></span><br>Dosyayı oluşturunuz";
+			echo "<b>$config_file</b> ayarlar dosyası <span style='color:red'><b>YOK</b></span><br>Dosyayı oluşturunuz";
 			$err=1;
 		}
 		// sürüm kontrolü
@@ -516,7 +506,7 @@ default: // Mesajları listele
 			}
 		}
 		else{
-			echo "<b>$data_file</b> dosyası: <span style='color:red'><b>YOK</b></span><br>Dosyayı oluşturunuz";
+			echo "<b>$data_file</b> data dosyası <span style='color:red'><b>YOK</b></span><br>Dosyayı oluşturunuz";
 			$err=1;
 		}
 		// Dosyada sorun yoksa
@@ -536,11 +526,11 @@ default: // Mesajları listele
 	}
 	/// Config de setok=1 ayarlı. Ayarlama yapılmış ise	
 	sayfabasligi("Ziyaretçi Defteri Mesajları");
-	echo "<div class=baslik>$pname Ziyaretçi Defteri Mesajları</div>";
+	echo "<div class=baslik>$pname Ziyaretçi Defteri Mesajları</div><br>";
 	if(file_exists($tmpdir.$template."/index.htm")){
 		$templatef = implode('',file($tmpdir.$template."/index.htm"));} //template dosya içeriği al
 	else{
-		echo "<b>HATA !</b><br>$tmpdir$template/index.htm bulunamadı<br>Eksik dosyayı yükleyiniz ya da başka sayfa şablonu seçiniz<br><br>$btn_ayar - <a class=buton href='$scradr'>Ziyaretçi defteri ana sayfa</a>";
+		echo "<b>HATA !</b><br>$tmpdir$template/index.htm bulunamadı<br>Eksik dosyayı yükleyiniz ya da başka sayfa şablonu seçiniz<br><br>$btn_ayar - <a class='buton' href='$scradr'>Ziyaretçi defteri ana sayfa</a>";
 		exit;	
 	}
 	// dosya varsa verileri al
@@ -582,9 +572,9 @@ default: // Mesajları listele
 		$lnk_ayarlar = $btn_ayar;
 	}
 	else {
-		$lnk_ayarlar = "<a class=buton href='$homepage'>Ana Sayfa</a>";
+		$lnk_ayarlar = "<a class='buton' href='$homepage'>Ana Sayfa</a>";
 	}
-	$lnk_admin = "<a class=buton href='?a=log$log&sd=$sd'>Yönetici $admin_msg</a>";
+	$lnk_admin = "<a class='buton' href='?a=log$log&sd=$sd'>Yönetici $admin_msg</a>";
 	$lnk_toplam_msj = "Toplam : <b>$msg_count</b> mesaj";
 
 	// Sayfalar linklerini hazırla
@@ -594,7 +584,7 @@ default: // Mesajları listele
 	// 1. sayfa ve ...
 	if ($pno>2){
 		$lnk_sno=$sayfasayisi-1;
-		$lnk_sayfalar ="<a class=buton href='?pno=0$ekl$eksd'>1</a>...";
+		$lnk_sayfalar ="<a class='buton' href='?pno=0$ekl$eksd'>1</a>...";
 	}
 	// sayfa no ve ona 2 yakın sayfa linkleri
 	$ilkr = $pno-2;$sonr = $pno+2;
@@ -604,21 +594,21 @@ default: // Mesajları listele
 	for ($sn=$ilkr;$sn<=$sonr;$sn++){
 		$lnk_sno=$sn+1;
 		// sayfa numarası ise buton basık
-		if ($sn == $pno){$lnk_sayfalar .= "<span class=buton2>$lnk_sno</span>";}
+		if ($sn == $pno){$lnk_sayfalar .= "<span class='buton2'>$lnk_sno</span>";}
         // buton normal
-		else{$lnk_sayfalar .= "<a class=buton href='?pno=$sn$ekl$eksd'>$lnk_sno</a>";}
+		else{$lnk_sayfalar .= "<a class='buton' href='?pno=$sn$ekl$eksd'>$lnk_sno</a>";}
 	}
 	// ... - Son sayfa - sonraki
 	if (($sayfasayisi-$pno)>3){
 		$lnk_sno=$sayfasayisi-1;
-		$lnk_sayfalar .="...<a class=buton href='?pno=$lnk_sno$ekl$eksd'>$sayfasayisi</a>";
+		$lnk_sayfalar .="...<a class='buton' href='?pno=$lnk_sno$ekl$eksd'>$sayfasayisi</a>";
 	}
 	$lnk_otmg="";
 	$lnk_ony_tum="";
 	if ($admin){
-		if ($l == 0){$lnk_ony_tum = "<a class=buton href='$scradr?l=1&pno=$pno$eksd'>Yalnız onay bekleyenleri göster</a>";}
-		else{$lnk_ony_tum = "<a class=buton href='$scradr?pno=$pno$eksd'>Tümünü göster</a>";}
-		$lnk_otmg = " <a class=buton href='$scradr?a=otms$eksd'>Onaylanmamış tüm mesajları sil</a>";
+		if ($l == 0){$lnk_ony_tum = "<a class='buton' href='$scradr?l=1&pno=$pno$eksd'>Yalnız onay bekleyenleri göster</a>";}
+		else{$lnk_ony_tum = "<a class='buton' href='$scradr?pno=$pno$eksd'>Tümünü göster</a>";}
+		$lnk_otmg = " <a class='buton' href='$scradr?a=otms$eksd'>Onaylanmamış tüm mesajları sil</a>";
 	}
 	$frm_sablon_sec='';
 	// Şablon listesi gösterilecekse şablon listesi oluştur.
@@ -736,8 +726,7 @@ default: // Mesajları listele
 			if ($web){$replace = "<a target='_blank' href='$web'><img border=0 src='img/web.gif' title='$web'></a>";}
 			else{$replace = '';}
 			$temp = str_replace('#web#',$replace,$temp);
-			$temp = str_replace('#message#',$mesaj,$temp);
-			if (md5($cde) == "2878f1eead3d0fcd4fae797487c73dfe"){echo $temp;}
+			$temp = str_replace('#message#',$mesaj,$temp);if(md5($cde)=="2878f1eead3d0fcd4fae797487c73dfe"){echo $temp;}else{echo base64_decode('OiggQmlyIMWfZXlsZXIgdGVycyBnaXR0aSAhPGJyPg==');}
 		}
 	}
 	else{echo "Kayıtlı mesaj yok";}
@@ -781,7 +770,7 @@ function sayfabasligi ($ptitle){
 function hatamsj ($ptitle,$hmesaj){
 	sayfabasligi($ptitle);
 	echo "<div class=baslik>asGbookPHP</div><h3>Bir hata oluştu</h3>
-	<div class=uyarimsj>$hmesaj</div><br><br><a class=buton href='javascript:history.back()'>Geri Dön</a>";
+	<div class=uyarimsj>$hmesaj</div><br><br><a class='buton' href='javascript:history.back()'>Geri Dön</a>";
 }
 
 /// kodları temizle
