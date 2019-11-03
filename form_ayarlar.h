@@ -1,4 +1,4 @@
-<style type="text/css">
+﻿<style type="text/css">
 .frm a{font:12px Verdana}
 .frm a:hover {position: relative;} 
 .frm a[data]:hover:after {
@@ -181,6 +181,7 @@ bekleme aralığı </td>
 <td>
 <input id="saniye" name="wait_time" size="6" value="<?php echo "$wait_time"; ?>" onkeyup="dakika()"> saniye
 = <span id="dakika"></span>
+<script>dakika();</script>
 <a data='Aynı bilgisayardan ard ardına mesajlar yazarak ziyaretçi defterini kötüye kullananları önlemek için bekleme süresi belirleyiniz. 0(Sıfır) girerseniz hiç beklmeden tekrar mesaj gönderebilir'><img src="img/tooltip.gif"></a>
 </td>
 </tr>

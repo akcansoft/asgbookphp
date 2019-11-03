@@ -3,7 +3,7 @@ session_start();
 ob_start();
 /*========================================
  aSgbookPHP
- akcanSoft Guestbook PHP v2.5.191103 1530
+ akcanSoft Guestbook PHP v2.5.191103 1945
  
  © 2003-2019 Mesut Akcan
  
@@ -103,7 +103,7 @@ $cde=base64_decode('aHR0cDovL3d3dy5ha2NhbnNvZnQuY29t');
 switch ($a){
 case "login": // Yönetici giriş form 
     sayfabasligi("Yönetici Giriş Formu");
-    echo "<div class='baslik'>asGbookPHP Yönetici Giriş</div><form method='POST'><input type='hidden' name='a' value='login2'><table><tr><td align='right'>Yönetici Parolası:</td><td><input type='password' name='pass'> <input type='submit' value='Gönder' class='buton3'></td></tr><tr><td> </td><td><label><input name='hatirla' type='checkbox' value=1>Beni hatırla</label></td></tr></table></form>";
+    echo "<div class='baslik'>asGbookPHP Yönetici Giriş</div><form method='POST'><input type='hidden' name='a' value='login2'><table><tr><td align='right'>Yönetici Parolası:</td><td><input type='password' name='pass'> <input type='submit' value='Giriş' class='buton3'></td></tr><tr><td> </td><td><label><input name='hatirla' type='checkbox' value=1>Beni hatırla</label></td></tr></table></form>";
     break;
 case "login2": // YÖNETİCİ GİRİŞ 
 	$pass=htmkodsil($_POST['pass']); // yönetici giriş parolası
@@ -516,7 +516,7 @@ default: // Mesajları listele
 			echo "İlk kurulum yönetici parolası <b>admin</b> 'dir.<br>Parolayı değiştirmeyi unutmayınız.<br><br>";
 			echo "<span style='color:red'><b>Devam etmek için sayfayı en alta kaydırınız.</b></span>";
 			include ("README_TR.htm");
-			echo "<a class='buton' href='$scradr?a=login'> Devam </a>";
+			echo "<a class='buton' href='$scradr?a=login'> Devam &raquo;&raquo; </a>";
 		}
 		// Dosyalarda sorun varsa. Kuruluma devam etme
 		else{

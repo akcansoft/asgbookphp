@@ -1,13 +1,6 @@
 akcanSoft Ziyaretçi Defteri
-asGbookPhp - PHP Guestbook Script v2.5
+asGbookPhp - PHP Guestbook Script v2.5.191103
 3 Kasım 2019
-
-makcan@gmail.com
-
-www.akcansoft.com 
-www.youtube.com/mesutakcan
-www.facebook.com/akcansoft
-www.twitter.com/akcansoft
 
 Tanımlama
 ---------
@@ -22,6 +15,12 @@ v2.5: 03/11/2019
 * Mesaj düzenlenip gönderildikten sonra şablon varsayılan oluyordu. Düzeltildi.
 * Kodlarda iyileştirmeler yapıldı. PHP 7'ye uygun değişiklikler yapıldı
 
+Bağlantılar:
+------------
+Son sürümün kurulu olduğu sayfa: https://akcansoft.comli.com/zd/
+Kurulum videosu: https://www.youtube.com/watch?v=xba5n0YUoe0
+Ayrıntılı açıklamalı sayfa: http://www.akcansoft.com/2015/04/akcansoft-ziyaretci-defteri.html
+
 Kurulum ve Detaylı açıklama:
 ----------------------------
 README_TR.htm dosyasını inceleyiniz.
@@ -29,3 +28,9 @@ README_TR.htm dosyasını inceleyiniz.
 --
 © 2003-2019
 Mesut Akcan
+makcan@gmail.com
+
+www.akcansoft.com 
+www.youtube.com/mesutakcan
+www.facebook.com/akcansoft
+www.twitter.com/akcansoft
