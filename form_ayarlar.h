@@ -1,18 +1,23 @@
-﻿<style type="text/css">
+<style type="text/css">
 .frm a{font:12px Verdana}
-.frm a:hover {position: relative;} 
-.frm a[data]:hover:after {
+.frm a[data]{position: relative;}
+.frm a[data]::after{
 content: attr(data);
+display: block;
+position: absolute;
 padding: 4px 8px;
 color: black;
-position: absolute;
-left: 0;
-top: 100%;
-z-index: 2;
+border-radius: 8px;
+left: 20px;
+width:250px;
+background-color:#FC0 ;
 border:1px black solid;
-border-radius: 5px ;
-background:#FFCC00 ;
-width:220px;
+z-index: 2;
+transform: scale(0);
+transition:transform ease-out 150ms;
+}
+.frm a[data]:hover::after{
+	transform: scale(1);
 }
 </style>
 
