@@ -8,7 +8,7 @@ ob_start();
  © 2003-2019 Mesut Akcan
  
  makcan@gmail.com
- http://www.akcanSoft.com
+ https://akcanSoft.blogspot.com
  http://youtube.com/mesutakcan
  http://facebook.com/akcansoft
  http://twitter.com/akcansoft
@@ -99,7 +99,7 @@ else{$admin=FALSE;unset($l);unset($mno);$admin_msg = "Giriş";$log = "in";}
 $btn_msj="<a class='buton' href='$scradr'>Mesajlar</a>";
 $btn_ayar="<a class='buton' href='$scradr?a=ayar'>Ayarlar</a>";
 $a=isset($_REQUEST['a']) ? htmkodsil($_REQUEST['a']) : "";
-$cde=base64_decode('aHR0cDovL3d3dy5ha2NhbnNvZnQuY29t');
+$cde=base64_decode('aHR0cHM6Ly9ha2NhbnNvZnQuYmxvZ3Nwb3QuY29t');
 switch ($a){
 case "login": // Yönetici giriş form 
     sayfabasligi("Yönetici Giriş Formu");
