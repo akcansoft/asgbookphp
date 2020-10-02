@@ -4,11 +4,11 @@ ob_start();
 /*========================================
  aSgbookPHP
  akcanSoft Guestbook PHP v2.5.191103 1945
- 
- © 2003-2019 Mesut Akcan
+ 2 Ekim 2020 
+ © 2003-2020 Mesut Akcan
  
  makcan@gmail.com
- https://akcanSoft.blogspot.com
+ http://akcanSoft.blogspot.com
  http://youtube.com/mesutakcan
  http://facebook.com/akcansoft
  http://twitter.com/akcansoft
@@ -726,7 +726,7 @@ default: // Mesajları listele
 			if ($web){$replace = "<a target='_blank' href='$web'><img border=0 src='img/web.gif' title='$web'></a>";}
 			else{$replace = '';}
 			$temp = str_replace('#web#',$replace,$temp);
-			$temp = str_replace('#message#',$mesaj,$temp);if(md5($cde)=="2878f1eead3d0fcd4fae797487c73dfe"){echo $temp;}else{echo base64_decode('OiggQmlyIMWfZXlsZXIgdGVycyBnaXR0aSAhPGJyPg==');}
+			$temp = str_replace('#message#',$mesaj,$temp);if(md5($cde)=="239abde0d626641220538b10c3c99a51"){echo $temp;}else{echo base64_decode('OiggQmlyIMWfZXlsZXIgdGVycyBnaXR0aSAhPGJyPg==');}
 		}
 	}
 	else{echo "Kayıtlı mesaj yok";}
