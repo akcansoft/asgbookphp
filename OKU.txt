@@ -26,11 +26,12 @@ Kurulum ve Detaylı açıklama:
 README_TR.htm dosyasını inceleyiniz.
 
 --
-© 2003-2019
+© 2003-2023
 Mesut Akcan
 makcan@gmail.com
 
-https://akcansoft.blogspot.com 
+https://akcansoft.blogspot.com
+https://mesutakcan.blogspot.com 
 www.youtube.com/mesutakcan
 www.facebook.com/akcansoft
 www.twitter.com/akcansoft
