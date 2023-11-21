@@ -12,5 +12,5 @@ Kişisel sitelerde kullanımı bedavadır. Kuralları ve yardımı okuyunuz.
 <br><br>
 Ziyaretçi Defterim'in son sürümünün kurulu olduğu sayfa: http://akcansoft.byethost7.com/zd <br>
 asgbookphp Ziyaretçi Defteri Kurulum videosu: https://www.youtube.com/watch?v=xba5n0YUoe0 <br>
-Ayrıntılı açıklamalı sayfa: https://akcansoft.blogspot.com/p/akcansoft-ziyaretci-defteri-php-script.html <br>
+Ayrıntılı açıklamalı sayfa: https://akcansoft.blogspot.com/2015/04/akcansoft-ziyaretci-defteri_3.html <br>
 Tüm sürümler: http://www.mediafire.com/folder/k0409casd182e/asGbookPHP
