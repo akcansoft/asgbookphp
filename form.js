@@ -1,4 +1,4 @@
-// scripts by: Mesut Akcan // http://akcansoft.com
+// scripts by: Mesut Akcan // http://akcansoft.blogspot.com
 var gk, gkks;
 
 function kalan(){
