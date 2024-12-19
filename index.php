@@ -9,9 +9,10 @@ ob_start();
  
  makcan@gmail.com
  http://akcanSoft.blogspot.com
+ http://mesutakcan.blogspot.com
  http://youtube.com/mesutakcan
- http://facebook.com/akcansoft
- http://twitter.com/akcansoft
+ http://facebook.com/mesutakcan
+ http://twitter.com/mesutakcan
 
 ==> Neler Yeni <===
 * Mesaj gönderimini geçici devre dışı bırakma özelliği eklendi
